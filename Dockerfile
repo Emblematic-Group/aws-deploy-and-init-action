@@ -7,10 +7,6 @@ LABEL com.github.actions.description="Deploy AWS SAM Stack"
 LABEL com.github.actions.icon="upload-cloud"
 LABEL com.github.actions.color="purple"
 
-LABEL repository="https://github.com/falnyr/aws-sam-deploy-action"
-LABEL homepage="https://github.com/falnyr/aws-sam-deploy-action"
-LABEL maintainer="Jan Richter <falnyr@gmail.com>"
-
 ENV GLIBC_VER=2.31-r0
 
 # install glibc compatibility for alpine
