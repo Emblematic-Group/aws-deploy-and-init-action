@@ -4,6 +4,8 @@ echo "JOB STARTED"
 
 set -e
 
+BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})
+
 echo "Check env variables STARTED"
 
 if [[ ! -z "$AWS_FOLDER" ]]; then
@@ -75,7 +77,7 @@ fi
 
 if [[ -z "$AWS_STACK_PREFIX" ]]; then
     echo "You haven't declared any AWS_STACK_PREFIX. Using the branch name instead."
-    AWS_STACK_PREFIX="$(echo ${GITHUB_REF#refs/heads/})"
+    AWS_STACK_PREFIX=$BRANCH_NAME
 fi
 
 if [[ "$BRANCH_NAME" == "awsstaging" ]]; then
