@@ -58,10 +58,6 @@ if [[ -z "$AWS_REGION_VALUE" ]]; then
     exit 1
 fi
 
-if [[ ! -z "$AWS_DEPLOY_BUCKET" ]]; then
-    unset $AWS_DEPLOY_BUCKET
-fi
-
 if [[ -z "$PGUSER" ]]; then
     echo PGUSER missing
     exit 1
