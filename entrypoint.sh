@@ -55,13 +55,8 @@ if [[ -z "$AWS_SECRET_ACCESS_KEY_VALUE" ]]; then
     exit 1
 fi
 
-if [[ -z "$STAGING_AWS_REGION_VALUE" ]]; then
-    echo Staging AWS Region invalid
-    exit 1
-fi
-
-if [[ -z "$PRODUCTION_AWS_REGION_VALUE" ]]; then
-    echo Production AWS Region invalid
+if [[ -z "$AWS_REGION_VALUE" ]]; then
+    echo You must define the AWS_REGION_VALUE
     exit 1
 fi
 
@@ -75,24 +70,18 @@ if [[ -z "$PGPASSWORD" ]]; then
     exit 1
 fi
 
-if [[ -z "$AWS_STACK_PREFIX" ]]; then
-    echo "You haven't declared any AWS_STACK_PREFIX. Using the branch name instead."
-    AWS_STACK_PREFIX=$BRANCH_NAME
+if [[ -z "$ZC_KEY" ]]; then
+    echo ZC_KEY missing
+    exit 1
 fi
 
-if [[ "$BRANCH_NAME" == "awsstaging" ]]; then
-    AWS_REGION_VALUE=$STAGING_AWS_REGION_VALUE
-    echo "AWS REGION is $STAGING_AWS_REGION_VALUE"
+if [[ -z "$ZC_EMAIL" ]]; then
+    echo ZC_EMAIL missing
+    exit 1
 fi
 
-if [[ "$BRANCH_NAME" == "awsproduction" ]]; then
-    AWS_REGION_VALUE=$PRODUCTION_AWS_REGION_VALUE
-    echo "AWS REGION is $PRODUCTION_AWS_REGION_VALUE"
-fi
-
-
-if [[ -z "$AWS_REGION_VALUE" ]]; then
-    echo AWS Region invalid. Are you running this on awsstaging or awsproduction?
+if [[ -z "$REACH_KEY" ]]; then
+    echo REACH_KEY missing
     exit 1
 fi
 
@@ -140,6 +129,7 @@ output = text
 region = $AWS_REGION_VALUE" > ~/.aws/config
 
 
+AWS_STACK_PREFIX=$BRANCH_NAME
 STACKS3="${AWS_STACK_PREFIX}-${AWS_REGION_VALUE}-s3"
 STACKRDS="${AWS_STACK_PREFIX}-${AWS_REGION_VALUE}-rds"
 STACKLAMBDA="${AWS_STACK_PREFIX}-${AWS_REGION_VALUE}-lambda"
@@ -284,6 +274,8 @@ aws cloudformation deploy --template-file lambdapackage.yml \
 --capabilities CAPABILITY_NAMED_IAM --stack-name $STACKLAMBDA \
 --parameter-overrides S3StackName=$STACKS3 S3BucketName=$S3NAME S3BucketArn=$S3ARN \
 RDSStackName=$STACKRDS RDSInstanceAddress=$RDSADDRESS RDSInstancePort=$RDSPORT \
+DB_NAME=$PGUSER DB_USER=$DB_USER DB_PASSWORD=$DB_PASSWORD \
+ZC_KEY=$ZC_KEY ZC_EMAIL=$ZC_EMAIL REACH_KEY=$REACH_KEY \
 BranchName=$AWS_STACK_PREFIX \
 $TAGS $NO_FAIL_EMPTY_CHANGESET
 
