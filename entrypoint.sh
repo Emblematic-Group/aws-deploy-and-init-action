@@ -274,8 +274,9 @@ aws cloudformation deploy --template-file lambdapackage.yml \
 --capabilities CAPABILITY_NAMED_IAM --stack-name $STACKLAMBDA \
 --parameter-overrides S3StackName=$STACKS3 S3BucketName=$S3NAME S3BucketArn=$S3ARN \
 RDSStackName=$STACKRDS RDSInstanceAddress=$RDSADDRESS RDSInstancePort=$RDSPORT \
-DB_NAME=$PGUSER DB_USER=$DB_USER DB_PASSWORD=$DB_PASSWORD \
-ZC_KEY=$ZC_KEY ZC_EMAIL=$ZC_EMAIL REACH_KEY=$REACH_KEY \
+ZcApiKey=$ZC_KEY ZcEmail=$ZC_EMAIL \
+DbInstanceName=$PGUSER DbUsername=$PGUSER DbPassword=$PGPASSWORD \
+ReachApiKey=$REACH_KEY \
 BranchName=$AWS_STACK_PREFIX \
 $TAGS $NO_FAIL_EMPTY_CHANGESET
 
